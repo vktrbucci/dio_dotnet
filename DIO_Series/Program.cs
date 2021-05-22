@@ -23,10 +23,10 @@ namespace DIO_Series
                         AtualizarSerie();
                         break;
                     case "4":
-                        // ExcluirSerie();
+                        ExcluirSerie();
                         break;
                     case "5":
-                        // VisualizarSerie();
+                        VisualizarSerie();
                         break;
                     case "C":
                         Console.Clear();
@@ -55,9 +55,13 @@ namespace DIO_Series
                 return;
             }
 
+            // Colocar verificação se a série está excluída
             foreach (var serie in lista)
             {
-                Console.WriteLine("#ID {0}: - {1}", serie.retornaId(), serie.retornaTitulo());
+                if (!serie.retornaExcluido())
+                {
+                    Console.WriteLine("#ID {0}: - {1}", serie.retornaId(), serie.retornaTitulo());
+                }
             }
         }
 
@@ -121,6 +125,25 @@ namespace DIO_Series
                                             descricao: entradaDescricao);
             
             repositorio.Atualiza(idSerie, atualizaSerie);
+        }
+
+        private static void ExcluirSerie()
+        {
+            Console.Write("Digite o ID da série que deseja excluir: ");
+            int idSerie = int.Parse(Console.ReadLine());
+
+            // Inserir Pergunta de confirmação de exclusão
+            repositorio.Exclui(idSerie);
+        }
+
+        private static void VisualizarSerie()
+        {
+            Console.Write("Digite o ID da série que deseja visualizar: ");
+            int idSerie = int.Parse(Console.ReadLine());
+
+            var serie = repositorio.RetornaPorId(idSerie);
+
+            Console.WriteLine(serie);
         }
 
         private static string ObterOpcaoUsuario()
